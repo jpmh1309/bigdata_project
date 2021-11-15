@@ -2,34 +2,15 @@
 # import findspark
 # findspark.init('/usr/lib/python3.7/site-packages/pyspark')
 
-from pyspark.sql.types import StringType, IntegerType, FloatType, StructField, StructType
-
-
-# from pyspark.ml.functions import vector_to_array
-from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, isnan, when, count, lower, to_timestamp, year, concat_ws, size, explode, array, lit
+from pyspark.ml.feature import Tokenizer, StringIndexer, OneHotEncoder, VectorAssembler, Imputer, StandardScaler, StopWordsRemover
+from pyspark.sql.types import StringType, IntegerType, FloatType, StructField, StructType
+from pyspark.ml.stat import Correlation
+from pyspark.sql import SparkSession
 from pyspark_dist_explore import hist
 import matplotlib.pyplot as plt
 from pyspark.ml import Pipeline
-from pyspark.ml.feature import Tokenizer, StringIndexer, OneHotEncoder, VectorAssembler, Imputer, StandardScaler, StopWordsRemover
-from pyspark.ml.stat import Correlation
 import seaborn as sns
-# from pyspark.ml.tuning import CrossValidator, CrossValidatorModel
-# from pyspark.mllib.evaluation import BinaryClassificationMetrics
-# from pyspark.sql.functions import rand
-# import numpy as np
-# import collections
-# from pyspark.ml.evaluation import BinaryClassificationEvaluator
-# from pyspark.ml.classification import LogisticRegression
-# from pyspark.ml.tuning import ParamGridBuilder
-
-# from pyspark.ml.evaluation import BinaryClassificationEvaluator
-# from pyspark.ml.classification import RandomForestClassifier
-# from pyspark.ml.tuning import ParamGridBuilder
-
-# from pyspark.ml.evaluation import BinaryClassificationEvaluator
-# from pyspark.ml.classification import DecisionTreeClassifier
-# from pyspark.ml.tuning import ParamGridBuilder
 
 def spark_session():
     """
@@ -593,72 +574,82 @@ def main():
     df_imputer.describe(['audience_rating', 'audience_count', 'tomatometer_top_critics_count']).show()
     df_imputer.describe(['tomatometer_fresh_critics_count', 'tomatometer_rotten_critics_count', 'winner_indexed']).show()
 
-    # # Plot histogram of awards column
-    # df.select("genre_indexed").show()
+    # Plot histogram of awards column
+    df.select("genre_indexed").show()
 
-    # # Plot histogram of awards column
-    # df.select("winner_indexed").show()
+    # Plot histogram of awards column
+    df.select("winner_indexed").show()
 
-    # df_join = df   
+    df_join = df   
 
-    # fig, ax = plt.subplots(nrows=9, ncols=2)
-    # fig.set_size_inches(20, 20)
+    fig, ax = plt.subplots(nrows=4, ncols=2)
+    fig.set_size_inches(20, 20)
 
-    # hist(ax[0, 0], df.select('duration'))
-    # ax[0, 0].set_title('duration')
+    hist(ax[0, 0], df.select('duration'))
+    ax[0, 0].set_title('duration')
 
-    # hist(ax[0, 1], df.select('director_indexed'))
-    # ax[0, 1].set_title('director_indexed')
+    hist(ax[0, 1], df.select('director_indexed'))
+    ax[0, 1].set_title('director_indexed')
 
-    # hist(ax[1, 0], df.select('writer_indexed'))
-    # ax[1, 0].set_title('writer_indexed')
+    hist(ax[1, 0], df.select('writer_indexed'))
+    ax[1, 0].set_title('writer_indexed')
 
-    # hist(ax[1, 1], df.select('production_company_indexed'))
-    # ax[1, 1].set_title('production_company_indexed')
+    hist(ax[1, 1], df.select('production_company_indexed'))
+    ax[1, 1].set_title('production_company_indexed')
 
-    # hist(ax[2, 0], df.select('actors_indexed'))
-    # ax[2, 0].set_title('actors_indexed')
+    hist(ax[2, 0], df.select('actors_indexed'))
+    ax[2, 0].set_title('actors_indexed')
 
-    # hist(ax[2, 1], df.select('avg_vote'))
-    # ax[2, 1].set_title('avg_vote')
+    hist(ax[2, 1], df.select('avg_vote'))
+    ax[2, 1].set_title('avg_vote')
 
-    # hist(ax[3, 0], df.select('votes'))
-    # ax[3, 0].set_title('votes')
+    hist(ax[3, 0], df.select('votes'))
+    ax[3, 0].set_title('votes')
 
-    # hist(ax[3, 1], df.select('reviews_from_users'))
-    # ax[3, 1].set_title('reviews_from_users')
+    hist(ax[3, 1], df.select('reviews_from_users'))
+    ax[3, 1].set_title('reviews_from_users')
 
-    # hist(ax[4, 0], df.select('reviews_from_critics'))
-    # ax[4, 0].set_title('reviews_from_critics')
+    plt.show()
 
-    # hist(ax[4, 1], df.select('tomatometer_rating'))
-    # ax[4, 1].set_title('tomatometer_rating')
+    fig, ax = plt.subplots(nrows=4, ncols=2)
+    fig.set_size_inches(20, 20)
 
-    # hist(ax[5, 0], df.select('tomatometer_count'))
-    # ax[5, 0].set_title('tomatometer_count')
+    hist(ax[4, 0], df.select('reviews_from_critics'))
+    ax[0, 0].set_title('reviews_from_critics')
 
-    # hist(ax[5, 1], df.select('audience_rating'))
-    # ax[5, 1].set_title('audience_rating')
+    hist(ax[4, 1], df.select('tomatometer_rating'))
+    ax[0, 1].set_title('tomatometer_rating')
 
-    # hist(ax[6, 0], df.select('audience_count'))
-    # ax[6, 0].set_title('audience_count')
+    hist(ax[5, 0], df.select('tomatometer_count'))
+    ax[1, 0].set_title('tomatometer_count')
 
-    # hist(ax[6, 1], df.select('tomatometer_top_critics_count'))
-    # ax[6, 1].set_title('tomatometer_top_critics_count')
+    hist(ax[5, 1], df.select('audience_rating'))
+    ax[1, 1].set_title('audience_rating')
 
-    # hist(ax[7, 0], df.select('tomatometer_fresh_critics_count'))
-    # ax[7, 0].set_title('tomatometer_fresh_critics_count')
+    hist(ax[6, 0], df.select('audience_count'))
+    ax[3, 0].set_title('audience_count')
 
-    # hist(ax[7, 1], df.select('tomatometer_rotten_critics_count'))
-    # ax[7, 1].set_title('tomatometer_rotten_critics_count')
+    hist(ax[6, 1], df.select('tomatometer_top_critics_count'))
+    ax[3, 1].set_title('tomatometer_top_critics_count')
 
-    # hist(ax[8, 0], df.select('winner_indexed'))
-    # ax[8, 0].set_title('winner_indexed')
+    plt.show()
+
+    fig, ax = plt.subplots(nrows=2, ncols=2)
+    fig.set_size_inches(20, 20)
+
+    hist(ax[7, 0], df.select('tomatometer_fresh_critics_count'))
+    ax[0, 0].set_title('tomatometer_fresh_critics_count')
+
+    hist(ax[7, 1], df.select('tomatometer_rotten_critics_count'))
+    ax[0, 1].set_title('tomatometer_rotten_critics_count')
+
+    hist(ax[8, 0], df.select('winner_indexed'))
+    ax[1, 0].set_title('winner_indexed')
    
-    # hist(ax[8, 1], df.select('genre_indexed'))
-    # ax[8, 1].set_title('genre_indexed')
+    hist(ax[8, 1], df.select('genre_indexed'))
+    ax[1, 1].set_title('genre_indexed')
 
-    # plt.show()
+    plt.show()
 
     # ----------------------------------------------------------------------------- #
     # Oversampling  
@@ -706,88 +697,6 @@ def main():
     df_scaled = df_scaled.select(['scaledFeatures', 'winner_indexed'])
     df_scaled.printSchema()
     df_scaled.show()
-
-    # # ----------------------------------------------------------------------------- #
-    # # Train/Test Split
-    # # ----------------------------------------------------------------------------- #
-
-    # Split the data into training and test sets (70 % training, 30 % test)
-    training_df, test_df = df.randomSplit([0.7, 0.3])
-
-    # Print the number of observations in the training (label) and test (label) datasets
-    print(df.count())
-    print(training_df.count())
-    print(test_df.count())
-
-    # df = training_df.select('Features', 'winner_indexed')
-    # df.show()
-
-    # lr = LogisticRegression(featuresCol='Features', labelCol='winner_indexed', maxIter=10)
-    # grid = ParamGridBuilder().addGrid(param=lr.maxIter, values=[10]).build()
-
-    # # Implementa k-Folds e imprime informacion por cada iteracion
-    # cv = CrossValidatorVerbose(estimator=lr,
-    #                         estimatorParamMaps=grid,
-    #                         evaluator=BinaryClassificationEvaluator(labelCol='winner_indexed'),
-    #                         numFolds=5)
-
-    # cvlr_model, lr_folds = cv.fit(df)
-    # # Crea graficas y analisis de los resultados
-
-    # # Weights
-    # print('Pesos: {}\n b: {}'.format(cvlr_model.bestModel.coefficients, cvlr_model.bestModel.intercept))
-
-    # # Coefficients 
-    # beta = np.sort(cvlr_model.bestModel.coefficients)
-    # plt.plot(beta)
-    # plt.ylabel('Beta Coefficients')
-    # plt.show()
-
-    # # Area under ROC
-    # trainingSummary = cvlr_model.bestModel.summary
-    # roc = trainingSummary.roc.toPandas()
-    # plt.plot(roc['FPR'],roc['TPR'])
-    # plt.ylabel('False Positive Rate')
-    # plt.xlabel('True Positive Rate')
-    # plt.title('ROC Curve')
-    # plt.show()
-
-    # # Precision and recall.
-    # pr = trainingSummary.pr.toPandas()
-    # plt.plot(pr['recall'],pr['precision'])
-    # plt.ylabel('Precision')
-    # plt.xlabel('Recall')
-    # plt.show()
-        
-    # # cvlr_auroc, cvlr_auprc, cvlr_acc = display_metrics(cvlr_model)
-
-    # df = training_df.select('Features', 'winner_indexed')
-    # df.show()
-
-    # rf = RandomForestClassifier(featuresCol='Features', labelCol='winner_indexed', maxDepth=4)
-    # grid = ParamGridBuilder().addGrid(rf.maxDepth, values=[4]).build()
-
-    # # Implementa k-Folds e imprime informacion por cada iteracion
-    # cv = CrossValidatorVerbose(estimator=rf,
-    #                         estimatorParamMaps=grid,
-    #                         evaluator=BinaryClassificationEvaluator(labelCol='winner_indexed'),
-    #                         numFolds=5)
-
-    # cvrf_model, rf_folds = cv.fit(df)
-
-    # df = training_df.select('Features', 'winner_indexed')
-    # df.show()
-
-    # dt = DecisionTreeClassifier(featuresCol='Features', labelCol='winner_indexed', maxDepth = 4)
-    # grid = ParamGridBuilder().addGrid(dt.maxDepth, values=[4]).build()
-
-    # # Implementa k-Folds e imprime informacion por cada iteracion
-    # cv = CrossValidatorVerbose(estimator=dt,
-    #                         estimatorParamMaps=grid,
-    #                         evaluator=BinaryClassificationEvaluator(labelCol='winner_indexed'),
-    #                         numFolds=5)
-
-    # cvdt_model, dt_folds = cv.fit(df)
 
 if __name__ == "__main__":
     main()
