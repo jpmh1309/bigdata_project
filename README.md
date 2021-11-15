@@ -104,20 +104,6 @@ Jose Martinez
 
    - cd part1_test/
 
-3. Run preprocessing.py
-
-   - ./execute.sh
-
-## Write to DB
-
-1. Create and docker image
-
-   - ./execute_image.sh
-
-2. Enter part2_write_db folder 
-
-   - cd part2_write_db/
-
 3. Run whole tests
 
    - pytest
@@ -131,6 +117,20 @@ Jose Martinez
 5. Run specific test
 
    - pytest -k TEST_NAME
+
+## Write to DB
+
+1. Create and docker image
+
+   - ./execute_image.sh
+
+2. Enter part2_write_db folder 
+
+   - cd part2_write_db/
+
+3. Run write_to_db.py
+
+   - ./execute.sh
 
 ## Execute model 
 
