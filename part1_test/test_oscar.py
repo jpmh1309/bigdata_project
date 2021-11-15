@@ -26,3 +26,19 @@ def test_read_oscar_data(spark_session):
         "winner"])
 
     assert actual_df.first() == expected_df.first()
+
+def test_oscar_data_remove_empty_columns(spark_session):
+    """
+    Test that ensures that we remove columns that are null in 60% of the data
+    """
+    oscar_df = load_oscar_data(spark_session, "../data/the_oscar_award.csv")
+
+    # Remove columns that are null in 60% of the data
+    actual_df = clean_columns(oscar_df)
+
+    # Expected dataframe should be the same as the actual dataframe
+    # since there are no columns that are null in 60% of the data
+    expected_df = clean_columns(actual_df)
+
+
+    assert actual_df.collect() == expected_df.collect()

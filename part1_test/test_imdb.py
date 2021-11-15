@@ -62,3 +62,20 @@ def test_read_imdb_data(spark_session):
          "reviews_from_critics"])
 
     assert actual_df.first() == expected_df.first()
+
+
+def test_imdb_data_remove_empty_columns(spark_session):
+    """
+    Test that ensures that we remove columns that are null in 60% of the data
+    """
+    imdb_df = load_imdb_data(spark_session, "../data/IMDb_movies.csv")
+
+    # Remove columns that are null in 60% of the data
+    actual_df = clean_columns(imdb_df)
+
+    # Expected dataframe should be the same as the actual dataframe
+    # since there are no columns that are null in 60% of the data
+    expected_df = clean_columns(actual_df)
+
+
+    assert actual_df.collect() == expected_df.collect()

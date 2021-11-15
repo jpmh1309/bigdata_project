@@ -59,3 +59,20 @@ def test_read_rotten_data(spark_session):
          "tomatometer_rotten_critics_count"])
    
     assert actual_df.first() == expected_df.first()
+
+
+def test_imdb_data_remove_empty_columns(spark_session):
+    """
+    Test that ensures that we remove columns that are null in 60% of the data
+    """
+    rotten_df = load_rotten_tomatoes_data(spark_session, "../data/rotten_tomatoes_movies.csv")
+
+    # Remove columns that are null in 60% of the data
+    actual_df = clean_columns(rotten_df)
+
+    # Expected dataframe should be the same as the actual dataframe
+    # since there are no columns that are null in 60% of the data
+    expected_df = clean_columns(actual_df)
+
+
+    assert actual_df.collect() == expected_df.collect()
