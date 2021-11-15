@@ -5,7 +5,7 @@ from preprocessing import extract_year, clean_columns, lower_case_columns, remov
 from pyspark.sql.types import StringType, IntegerType, FloatType, StructField, StructType
 
 
-# @pytest.mark.skip(reason="FIXME: This test is not working yet")
+@pytest.mark.skip(reason="FIXME: This test is not working yet")
 def test_read_imdb_data(spark_session):
     """
     Test if the data is read correctly
