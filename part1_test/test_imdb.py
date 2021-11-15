@@ -2,6 +2,7 @@ import sys
 import pytest
 sys.path.insert(0, '../part1_preprocessing')
 from preprocessing import extract_year, clean_columns, lower_case_columns, remove_columns, load_imdb_data
+from pyspark.sql.types import StringType, IntegerType, FloatType, StructField, StructType
 
 
 # @pytest.mark.skip(reason="FIXME: This test is not working yet")
@@ -11,29 +12,30 @@ def test_read_imdb_data(spark_session):
     """
     actual_df = load_imdb_data(spark_session, "../data/IMDb_movies.csv")
 
-    simpleData =[("tt0000009",
-                  "Miss Jerry",
-                  "Miss Jerry",
-                  1894,
-                  "1894-10-09",
-                  "Romance",
-                  45,
-                  "USA",
-                  str(),
-                  "Alexander Black",
-                  "Alexander Black",
-                  "Alexander Black Photoplays",
-                  "Blanche Bayliss, William Courtenay", 
-                  "Chauncey Depew",
-                  "The adventures of a female reporter in the 1890s.",
-                  5.9,
-                  154,
-                  str(),
-                  str(),
-                  str(),
-                  int(),
-                  1.0,
-                  2.0)]
+
+    simpleData =[(
+        "tt2395427",
+        "Avengers: Age of Ultron",
+        "Avengers: Age of Ultron",
+        2015,
+        "2015-04-22",
+        "Action, Adventure, Sci-Fi",
+        141,
+        "USA",
+        "English, Korean", 
+        "Joss Whedon",
+        "Joss Whedon, Stan Lee",
+        "Marvel Studios",
+        "Robert Downey Jr., Chris Hemsworth, Mark Ruffalo, Chris Evans, Scarlett Johansson, Jeremy Renner, James Spader, Samuel L. Jackson, Don Cheadle, Aaron Taylor-Johnson, Elizabeth Olsen, Paul Bettany, Cobie Smulders, Anthony Mackie, Hayley Atwell",
+        "When Tony Stark and Bruce Banner try to jump-start a dormant peacekeeping program called Ultron, things go horribly wrong and it's up to Earth's mightiest heroes to stop the villainous Ultron from enacting his terrible plan.",
+        7.300000190734863,
+        722685,
+        "$ 250000000",
+        "$ 459005868",
+        "$ 1402808753",
+        66.0,
+        1306.0,
+        693.0)]
 
     expected_df = spark_session.createDataFrame(simpleData, 
         ["imdb_title_id", 
