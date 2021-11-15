@@ -73,25 +73,80 @@ Jose Martinez
 
 - `winner`: winner of the ceremony (string)
 
-## Execution
+## Create database
 
 1. Create database 
 
    - cd db/
    - ./run_image.sh 
 
-2. Create and docker image
+## Execute preprocessing
+
+1. Create and docker image
 
    - ./execute_image.sh
 
-3. Inside the docker image, load jupyter notebook:
+2. Enter part1_preprocessing folder 
+
+   - cd part1_preprocessing/
+
+3. Run preprocessing.py
+
+   - ./execute.sh
+
+## Execute test
+
+1. Create and docker image
+
+   - ./execute_image.sh
+
+2. Enter part1_test folder 
+
+   - cd part1_test/
+
+3. Run preprocessing.py
+
+   - ./execute.sh
+
+## Write to DB
+
+1. Create and docker image
+
+   - ./execute_image.sh
+
+2. Enter part2_write_db folder 
+
+   - cd part2_write_db/
+
+3. Run whole tests
+
+   - pytest
+
+4. Run whole suite of tests
+
+   - pytest test_oscar.py
+   - pytest test_imdb.py
+   - pytest test_rotten.py
+
+5. Run specific test
+
+   - pytest -k TEST_NAME
+
+## Execute model 
+
+1. Create and docker image
+
+   - ./execute_image.sh
+
+2. Load jupyter notebook
 
    - ./load_jupyter_notebook.sh
+   - Open url notebook in a browser 
 
-4. In juypter notebook, run the following code:
+3. Enter part3_and_4_sparkml folder
 
-   - cd sparkml/
+   - cd part3_and_4_sparkml/
 
-5. Run jupyter notebook:
+4. Run the whole jupyter notebook:
 
-   - model_hw3.ipynb
+   - model_project.ipynb
