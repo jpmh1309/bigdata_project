@@ -564,7 +564,7 @@ def main():
     # df.show()
 
     # ----------------------------------------------------------------------------- #
-    # TODO: Graphs and statistics
+    # Graphs and statistics
     # ----------------------------------------------------------------------------- #
 
     df_imputer.describe(['duration', 'director_indexed', 'writer_indexed']).show()
@@ -574,13 +574,7 @@ def main():
     df_imputer.describe(['audience_rating', 'audience_count', 'tomatometer_top_critics_count']).show()
     df_imputer.describe(['tomatometer_fresh_critics_count', 'tomatometer_rotten_critics_count', 'winner_indexed']).show()
 
-    # Plot histogram of awards column
-    df.select("genre_indexed").show()
-
-    # Plot histogram of awards column
-    df.select("winner_indexed").show()
-
-    df_join = df   
+    df = df_imputer   
 
     fig, ax = plt.subplots(nrows=4, ncols=2)
     fig.set_size_inches(20, 20)
@@ -611,42 +605,42 @@ def main():
 
     plt.show()
 
-    fig, ax = plt.subplots(nrows=4, ncols=2)
+    fig, ax = plt.subplots(nrows=3, ncols=2)
     fig.set_size_inches(20, 20)
 
-    hist(ax[4, 0], df.select('reviews_from_critics'))
+    hist(ax[0, 0], df.select('reviews_from_critics'))
     ax[0, 0].set_title('reviews_from_critics')
 
-    hist(ax[4, 1], df.select('tomatometer_rating'))
+    hist(ax[0, 1], df.select('tomatometer_rating'))
     ax[0, 1].set_title('tomatometer_rating')
 
-    hist(ax[5, 0], df.select('tomatometer_count'))
+    hist(ax[1, 0], df.select('tomatometer_count'))
     ax[1, 0].set_title('tomatometer_count')
 
-    hist(ax[5, 1], df.select('audience_rating'))
+    hist(ax[1, 1], df.select('audience_rating'))
     ax[1, 1].set_title('audience_rating')
 
-    hist(ax[6, 0], df.select('audience_count'))
-    ax[3, 0].set_title('audience_count')
+    hist(ax[2, 0], df.select('audience_count'))
+    ax[2, 0].set_title('audience_count')
 
-    hist(ax[6, 1], df.select('tomatometer_top_critics_count'))
-    ax[3, 1].set_title('tomatometer_top_critics_count')
+    hist(ax[2, 1], df.select('tomatometer_top_critics_count'))
+    ax[2, 1].set_title('tomatometer_top_critics_count')
 
     plt.show()
 
     fig, ax = plt.subplots(nrows=2, ncols=2)
     fig.set_size_inches(20, 20)
 
-    hist(ax[7, 0], df.select('tomatometer_fresh_critics_count'))
+    hist(ax[0, 0], df.select('tomatometer_fresh_critics_count'))
     ax[0, 0].set_title('tomatometer_fresh_critics_count')
 
-    hist(ax[7, 1], df.select('tomatometer_rotten_critics_count'))
+    hist(ax[0, 1], df.select('tomatometer_rotten_critics_count'))
     ax[0, 1].set_title('tomatometer_rotten_critics_count')
 
-    hist(ax[8, 0], df.select('winner_indexed'))
+    hist(ax[1, 0], df.select('winner_indexed'))
     ax[1, 0].set_title('winner_indexed')
    
-    hist(ax[8, 1], df.select('genre_indexed'))
+    hist(ax[1, 1], df.select('genre_indexed'))
     ax[1, 1].set_title('genre_indexed')
 
     plt.show()
