@@ -12,7 +12,6 @@ def test_read_imdb_data(spark_session):
     """
     actual_df = load_imdb_data(spark_session, "../data/IMDb_movies.csv")
 
-
     simpleData =[(
         "tt2395427",
         "Avengers: Age of Ultron",
@@ -79,3 +78,45 @@ def test_imdb_data_remove_empty_columns(spark_session):
 
 
     assert actual_df.collect() == expected_df.collect()
+
+
+def test_remove_colums_imdb_data(spark_session):
+    """
+    Test if the data is read correctly
+    """
+    actual_df = load_imdb_data(spark_session, "../data/IMDb_movies.csv")
+    simpleData =[(
+        "tt2395427",
+        "Avengers: Age of Ultron",
+        "Avengers: Age of Ultron",
+        2015,
+        "2015-04-22")]
+
+    expected_df = spark_session.createDataFrame(simpleData, 
+        ["imdb_title_id", 
+         "title", 
+         "original_title", 
+         "year", 
+         "date_published"])
+
+    actual_df = remove_columns(actual_df, 
+        ["genre", 
+         "duration", 
+         "country", 
+         "language", 
+         "director", 
+         "writer", 
+         "production_company", 
+         "actors", 
+         "description", 
+         "avg_vote", 
+         "votes", 
+         "budget", 
+         "usa_gross_income", 
+         "worlwide_gross_income", 
+         "metascore", 
+         "reviews_from_users", 
+         "reviews_from_critics"])
+
+
+    assert actual_df.first() == expected_df.first()

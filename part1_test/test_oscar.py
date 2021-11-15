@@ -42,3 +42,25 @@ def test_oscar_data_remove_empty_columns(spark_session):
 
 
     assert actual_df.collect() == expected_df.collect()
+
+
+def test_remove_colums_oscar_data(spark_session):
+    """
+    Test if the data is read correctly
+    """
+    actual_df = load_oscar_data(spark_session, "../data/the_oscar_award.csv")
+    simpleData =[(1927,
+                  1928,
+                  1,
+                  "ACTOR")]
+
+    expected_df = spark_session.createDataFrame(simpleData, 
+        ["year_film", 
+        "year_ceremony",
+        "ceremony", 
+        "category"])
+
+    actual_df = remove_columns(actual_df, ["name", "film", "winner"])
+
+
+    assert actual_df.first() == expected_df.first()
